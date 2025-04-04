@@ -177,7 +177,7 @@ for (const match of mockData) {
 	const userMinAgeInterest = userProfile.min_age_interest;
 	const userMaxAgeInterest = userProfile.max_age_interest;
 	const userGender = userProfile.gender;
-	const userGenderInterest = userProfile.gender_interest;
+	let userGenderInterest = userProfile.gender_interest;
 	const userLocation = userProfile.location;
 
 	// To match person data to compare with
@@ -185,8 +185,20 @@ for (const match of mockData) {
 	const matchMinAgeInterest = match.min_age_interest;
 	const matchMaxAgeInterest = match.max_age_interest;
 	const matchGender = match.gender;
-	const matchGenderInterest = match.gender_interest;
+	let matchGenderInterest = match.gender_interest;
 	const matchLocation = match.location;
+
+	if (userProfile.gender_interest === "X") {
+		userGenderInterest = ["M", "F"];
+	} else {
+		userGenderInterest = [userProfile.gender_interest];
+	}
+
+	if (match.gender_interest === "X") {
+		matchGenderInterest = ["M", "F"];
+	} else {
+		matchGenderInterest = [match.gender_interest];
+	}
 
 	if (
 		// Check for match age
@@ -196,9 +208,8 @@ for (const match of mockData) {
 		userAge >= matchMinAgeInterest &&
 		userAge <= matchMaxAgeInterest &&
 		// Check for gender
-		userGenderInterest === matchGender &&
-		// Check for match gender preferences
-		matchGenderInterest === userGender &&
+		userGenderInterest.includes(matchGender) &&
+		matchGenderInterest.includes(userGender) &&
 		// Check for location match
 		userLocation === matchLocation
 	) {
